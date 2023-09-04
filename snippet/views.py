@@ -20,16 +20,19 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
 
 """ User model """
 from django.contrib.auth.models import User
+from rest_framework import permissions
 
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 """ Using mixins """
