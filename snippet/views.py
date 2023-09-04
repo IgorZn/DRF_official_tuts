@@ -1,7 +1,7 @@
 """ Using generic class-based views """
 
 from snippet.models import Snippet
-from snippet.serializers import SnippetSerializer
+from snippet.serializers import SnippetSerializer, UserSerializer
 from rest_framework import generics
 
 
@@ -9,10 +9,27 @@ class SnippetList(generics.ListCreateAPIView):
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
+
+
+""" User model """
+from django.contrib.auth.models import User
+
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 """ Using mixins """
